@@ -125,6 +125,12 @@ class soundplayer:
         compensated = round(20*math.log10(distance) - 10*math.log10(numofspeakers))
         return compensated
 
+    def insituMultiMaskercompensate(self, numofspeakers,distance,noOfMaskers):
+        compensated = round(20*math.log10(distance) - 
+                            10*math.log10(numofspeakers) -
+                            20*math.log10(noOfMaskers))
+        return compensated
+
     def spatialize(self, masker, angle, normalize=True, offset=-65, k=1.0):
         # masker.shape = (n_samples,)2
         # angle in degrees
@@ -298,7 +304,8 @@ class soundplayer:
                         # time.sleep(10)
                     else:
                         # print("reading data")
-                        data = self.spatialize(f.read(self.blocksize, always_2d=True)*self.weightedgain,self.currentdoa)
+                        compGain = math.pow(10,self.insitucompensate(numofspeakers,optimaldistance)/20)
+                        data = f.read(self.blocksize, always_2d=True)*self.weightedgain*compGain
                         self.q.put(data, timeout=None)
                 self.event.wait()  # Wait until playback is finished
             if self.maskercounter<4 and varymaskers== True:
@@ -383,7 +390,7 @@ def customcallback(client, userdata, message):
     
 iotClient.connectAsync()
 print("Connected to test/nbs")
-switch = 1
+switch = 0
 
 settings = termios.tcgetattr(sys.stdin)
 mqtt_thread = threading.Thread(
