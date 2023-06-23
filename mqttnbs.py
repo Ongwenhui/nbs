@@ -348,7 +348,7 @@ class soundplayer:
                 while True:
                     time.sleep(1)
                     if switch != 2:
-                break
+                        break
             if switch == 1:
                 while True:
                     self.playmasker()    
