@@ -199,6 +199,12 @@ class soundplayer:
             sd.wait()
             if switch == 1:
                 break
+            
+    def playtesttone(self):
+        testtone, testtonefs = sf.read('/home/pi/4channel.wav')
+        sd.play(testtone, testtonefs, device=1)
+        sd.wait()
+        
     def playmasker(self):
         self.q = queue.Queue(maxsize=self.buffersize)
         newmasker = None
@@ -337,6 +343,12 @@ class soundplayer:
     def soundlooper(self):
         while True:
             print(switch)
+            if switch == 2:
+                self.playtesttone()
+                while True:
+                    time.sleep(1)
+                    if switch != 2:
+                break
             if switch == 1:
                 while True:
                     self.playmasker()    
