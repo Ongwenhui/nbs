@@ -196,7 +196,7 @@ class soundplayer:
         while True:
             sd.play(silence, silencefs, device=1)
             sd.wait()
-            if switch == 1:
+            if switch != 0:
                 break
             
     def playtesttone(self):
