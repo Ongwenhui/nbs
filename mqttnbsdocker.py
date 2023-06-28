@@ -80,7 +80,7 @@ calibgains = readcsv('/mqttnbs/Calibrations_final_speaker.csv')
 # mqttTOPIC = "amss/prediction"
 # mqttRANGE = 20
 
-LOCATION_ID = 'PWP'
+LOCATION_ID = 'NTU_YNG_639798'
 optimaldistance = 2.4
 numofspeakers = 4
 class soundplayer:
