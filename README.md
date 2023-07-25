@@ -10,3 +10,9 @@ Under <code>pyrunfile()</code>, replace the first argument with the filepath to 
 
 # sendtoiot.py
 Replace <code>PATH_TO_CERTIFICATE, PATH_TO_PRIVATE_KEY, PATH_TO_AMAZON_ROOT_CA_1</code> with the filepaths to the files included in the archive.. For simplicity's sake, I recommend putting everything in the same directory so that nothing needs to be edited.<br>
+
+# mqttnbsdocker.py
+Plays in amss mode whenever the software switch is turned on. This software switch is activated from <code>nbsiot.m</code>.
+
+### AWS subscription
+This script subscribes to two topics on AWS IoT Core asynchronously: <code>amss/{}/prediction</code> (with {} being <code>location_ID</code>, in order to retrieve the predictions for playback) and <code>test/nbs</code>, in order to receive the inputs for the software switch. The intervals between the subscriptions can be altered under the function <code>sp.mqttlooper</code>. The callback function for the subscription to <code>test/nbs</code> extracts the software switch from the json payload and returns it.
