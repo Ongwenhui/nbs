@@ -45,27 +45,29 @@ PATH_TO_AMAZON_ROOT_CA_1 = "/Users/ongwenhui/Desktop/certs/testcode/nbsiot/root.
 thing_name = "WenhuiAWSthing"
 shadow_name = "mqttnbs"
 
-event_loop_group = io.EventLoopGroup(1)
-host_resolver = io.DefaultHostResolver(event_loop_group)
-client_bootstrap = io.ClientBootstrap(event_loop_group, host_resolver)
-mqtt_connection = mqtt_connection_builder.mtls_from_path(
-            endpoint=ENDPOINT,
-            cert_filepath=PATH_TO_CERTIFICATE,
-            pri_key_filepath=PATH_TO_PRIVATE_KEY,
-            client_bootstrap=client_bootstrap,
-            ca_filepath=PATH_TO_AMAZON_ROOT_CA_1,
-            client_id=CLIENT_ID,
-            clean_session=False,
-            keep_alive_secs=6
-            )
-connected_future = mqtt_connection.connect()
-shadow_client = iotshadow.IotShadowClient(mqtt_connection)
-print("Connecting to {} with client ID '{}'...".format(
-        ENDPOINT, CLIENT_ID))
-connected_future.result()
-# Make the connect() call
-print("Connected!")
+if __name__ == '__main__':
+    event_loop_group = io.EventLoopGroup(1)
+    host_resolver = io.DefaultHostResolver(event_loop_group)
+    client_bootstrap = io.ClientBootstrap(event_loop_group, host_resolver)
+    mqtt_connection = mqtt_connection_builder.mtls_from_path(
+                endpoint=ENDPOINT,
+                cert_filepath=PATH_TO_CERTIFICATE,
+                pri_key_filepath=PATH_TO_PRIVATE_KEY,
+                client_bootstrap=client_bootstrap,
+                ca_filepath=PATH_TO_AMAZON_ROOT_CA_1,
+                client_id=CLIENT_ID,
+                clean_session=False,
+                keep_alive_secs=6
+                )
+    connected_future = mqtt_connection.connect()
+    shadow_client = iotshadow.IotShadowClient(mqtt_connection)
+    print("Connecting to {} with client ID '{}'...".format(
+            ENDPOINT, CLIENT_ID))
+    connected_future.result()
+    # Make the connect() call
+    print("Connected!")
 
-while True:
-    open_get_request()
-    get_accepted_responses()
+    while True:
+        try: 
+            open_get_request()
+            get_accepted_responses()
