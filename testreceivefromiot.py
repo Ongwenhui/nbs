@@ -12,11 +12,24 @@ from uuid import uuid4
 
 def on_get_shadow_accepted(response):
     if response:
-        print(response)
+        globalswitch = response.state.desired['onoff']
+        print(globalswitch)
+        print(type(globalswitch))
+
+def open_get_request():
+    print("Opening Get request...")
+    open_get_request_future = shadow_client.publish_get_named_shadow(
+        request=iotshadow.GetNamedShadowRequest(
+            shadow_name = shadow_name,
+            thing_name = thing_name
+        ),
+        qos=mqtt.QoS.AT_LEAST_ONCE
+    )
+    open_get_request_future.result()
     
 def get_accepted_responses():
     print("Subscribing to Get responses...")
-    get_accepted_subscribed_future, a = shadow_client.subscribe_to_get_named_shadow_accepted(
+    get_accepted_subscribed_future, _ = shadow_client.subscribe_to_get_named_shadow_accepted(
         request=iotshadow.GetNamedShadowSubscriptionRequest(shadow_name = shadow_name, thing_name = thing_name),
         qos=mqtt.QoS.AT_LEAST_ONCE,
         callback=on_get_shadow_accepted)
@@ -54,6 +67,5 @@ connected_future.result()
 print("Connected!")
 
 while True:
+    open_get_request()
     get_accepted_responses()
-
-
